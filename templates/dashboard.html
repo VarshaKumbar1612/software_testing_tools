@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow | QA & Defect Prediction Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+  <!-- Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <span class="brand-icon">🔬</span>
+        <span class="brand-title">QA Quality Suite</span>
+        <span class="brand-subtitle">Automated Defect & Metric Analyzer</span>
+      </div>
+      <div class="header-actions">
+        <a href="/" class="btn btn-secondary btn-sm">← Back to To-Do App</a>
+        <button id="btn-rerun-audit" class="btn btn-primary btn-sm">
+          <span id="rerun-icon" class="refresh-icon">↻</span>
+          <span id="rerun-text">Re-Run Analysis</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-wrapper dashboard-wrapper">
+      <!-- Title & Live Meta Banner -->
+      <section class="dashboard-hero">
+        <div>
+          <h1>Software Quality & Defect Prediction Dashboard</h1>
+          <p class="subtitle">Live multi-tool static & dynamic analysis covering <strong>PyTest</strong>, <strong>Coverage.py</strong>, <strong>Flake8</strong>, <strong>Bandit</strong>, and <strong>McCabe Cyclomatic Complexity</strong>.</p>
+        </div>
+        <div class="audit-meta-card">
+          <span class="meta-label">LAST AUDIT EXECUTION</span>
+          <span id="audit-timestamp" class="meta-value">Loading analysis...</span>
+        </div>
+      </section>
+
+      <!-- KPI Summary Cards (4 Primary Pillars) -->
+      <section class="kpi-grid">
+        <!-- KPI 1: Unit Tests -->
+        <div class="kpi-card" id="card-pytest">
+          <div class="kpi-header">
+            <span class="kpi-title">Unit Tests</span>
+            <span class="kpi-badge badge-success" id="kpi-tests-badge">PyTest</span>
+          </div>
+          <div class="kpi-main">
+            <span class="kpi-number" id="kpi-tests-val">--</span>
+            <span class="kpi-sub" id="kpi-tests-sub">Tests Passing</span>
+          </div>
+          <div class="kpi-footer">
+            <span id="kpi-tests-duration">Duration: -- s</span>
+          </div>
+        </div>
+
+        <!-- KPI 2: Code Coverage -->
+        <div class="kpi-card" id="card-coverage">
+          <div class="kpi-header">
+            <span class="kpi-title">Code Coverage</span>
+            <span class="kpi-badge badge-info" id="kpi-coverage-badge">Coverage.py</span>
+          </div>
+          <div class="kpi-main">
+            <span class="kpi-number" id="kpi-coverage-val">--%</span>
+            <span class="kpi-sub" id="kpi-coverage-lines">-- / -- statements</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar" id="kpi-coverage-bar" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- KPI 3: PEP 8 Lint Issues -->
+        <div class="kpi-card" id="card-flake8">
+          <div class="kpi-header">
+            <span class="kpi-title">PEP 8 / Lint Warnings</span>
+            <span class="kpi-badge badge-warning" id="kpi-flake8-badge">Flake8</span>
+          </div>
+          <div class="kpi-main">
+            <span class="kpi-number" id="kpi-flake8-val">--</span>
+            <span class="kpi-sub">Style & Formatting notices</span>
+          </div>
+          <div class="kpi-footer">
+            <span id="kpi-flake8-status">Clean syntax scan</span>
+          </div>
+        </div>
+
+        <!-- KPI 4: Security Alerts -->
+        <div class="kpi-card" id="card-bandit">
+          <div class="kpi-header">
+            <span class="kpi-title">Security Scan</span>
+            <span class="kpi-badge badge-danger" id="kpi-bandit-badge">Bandit AST</span>
+          </div>
+          <div class="kpi-main">
+            <span class="kpi-number" id="kpi-bandit-val">--</span>
+            <span class="kpi-sub">Vulnerabilities flagged</span>
+          </div>
+          <div class="kpi-footer">
+            <span id="kpi-bandit-severity">High / Medium issues</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- McCabe Defect Prediction Section -->
+      <section class="card section-card">
+        <div class="section-header-row">
+          <div>
+            <h2 class="section-title">McCabe Cyclomatic Defect Prediction</h2>
+            <p class="section-desc">Cyclomatic Complexity metric \(M = E - N + 2P\) evaluated per function. Predicts maintenance risk and defect likelihood based on independent logic paths.</p>
+          </div>
+          <div class="complexity-legend">
+            <span class="legend-badge badge-success">M = 1–5: Low Defect Risk</span>
+            <span class="legend-badge badge-warning">M = 6–10: Moderate Defect Risk</span>
+            <span class="legend-badge badge-danger">M &gt; 10: High Defect Risk</span>
+          </div>
+        </div>
+
+        <!-- Complexity Filter -->
+        <div class="table-controls">
+          <span class="filter-label">Filter Functions:</span>
+          <button class="filter-btn active" data-filter-risk="all">All Functions</button>
+          <button class="filter-btn" data-filter-risk="Low Defect Risk">Low Risk</button>
+          <button class="filter-btn" data-filter-risk="Moderate Defect Risk">Moderate Risk</button>
+          <button class="filter-btn" data-filter-risk="High Defect Risk">High Risk</button>
+        </div>
+
+        <!-- McCabe Table -->
+        <div class="table-responsive">
+          <table class="data-table" id="mccabe-table">
+            <thead>
+              <tr>
+                <th>Function / Target</th>
+                <th>Source File</th>
+                <th>Line #</th>
+                <th>Complexity (M)</th>
+                <th>Rank</th>
+                <th>Predicted Defect Risk</th>
+              </tr>
+            </thead>
+            <tbody id="mccabe-tbody">
+              <tr>
+                <td colspan="6" class="text-center text-muted">Running Radon complexity analysis...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Detailed Logs & Findings -->
+      <div class="grid-2-col">
+        <!-- Flake8 Issues Log -->
+        <section class="card section-card">
+          <div class="card-header-simple">
+            <h3 class="card-heading">Flake8 PEP 8 Findings</h3>
+            <span class="badge badge-warning" id="flake8-pill-count">0 Issues</span>
+          </div>
+          <p class="card-subtext">Static analysis for PEP 8 styling, line lengths, unused imports, and formatting.</p>
+          <div class="log-container" id="flake8-logs">
+            <div class="text-muted text-center py-4">Scanning code syntax...</div>
+          </div>
+        </section>
+
+        <!-- Bandit Security Findings Log -->
+        <section class="card section-card">
+          <div class="card-header-simple">
+            <h3 class="card-heading">Bandit AST Security Scanner</h3>
+            <span class="badge badge-danger" id="bandit-pill-count">0 Issues</span>
+          </div>
+          <p class="card-subtext">Automated security vulnerability checks on Python Abstract Syntax Trees (AST).</p>
+          <div class="log-container" id="bandit-logs">
+            <div class="text-muted text-center py-4">Scanning security posture...</div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Test Cases & Coverage Breakdown Grid -->
+      <div class="grid-2-col">
+        <!-- PyTest Tests Breakdown -->
+        <section class="card section-card">
+          <div class="card-header-simple">
+            <h3 class="card-heading">PyTest Execution Log</h3>
+            <span class="badge badge-success" id="pytest-pill-count">All Passed</span>
+          </div>
+          <p class="card-subtext">Individual unit test results, assertions, and execution timings.</p>
+          <div class="test-cases-list" id="pytest-tests-list">
+            <div class="text-muted text-center py-4">Executing test suite...</div>
+          </div>
+        </section>
+
+        <!-- Coverage Per-File Breakdown -->
+        <section class="card section-card">
+          <div class="card-header-simple">
+            <h3 class="card-heading">Coverage.py Per-Module Breakdown</h3>
+            <span class="badge badge-info" id="coverage-pill-percent">--%</span>
+          </div>
+          <p class="card-subtext">Statement coverage for core logic and Flask route handlers.</p>
+          <div class="file-coverage-list" id="file-coverage-list">
+            <div class="text-muted text-center py-4">Calculating module coverage...</div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="alert"></div>
+
+  <footer class="app-footer">
+    <p>Software Engineering Testing & Defect Prediction System &bull; Live Audit Powered by Python Subprocess Suite</p>
+  </footer>
+
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>

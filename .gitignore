@@ -1,0 +1,29 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+.coverage_audit.json
+.junit_report.xml
+htmlcov/
+*.xml
+coverage_test.json
+
+# Local runtime data
+tasks.json
+
+# OS / IDE
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow | To-Do Application</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navigation Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <span class="brand-icon">✓</span>
+        <span class="brand-title">TaskFlow</span>
+        <span class="brand-subtitle">Core To-Do Subject</span>
+      </div>
+      <nav class="nav-links">
+        <a href="/" class="nav-link active">To-Do List</a>
+        <a href="/dashboard" class="nav-link nav-qa-btn">
+          <span class="pulse-dot"></span>
+          QA & Defect Dashboard
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-content">
+    <div class="content-wrapper">
+      <!-- Title & Intro -->
+      <section class="hero-section">
+        <div class="hero-text">
+          <h1>Manage Your Tasks</h1>
+          <p>A clean, lightweight task manager designed as the core subject for Software Engineering QA & Defect Analysis.</p>
+        </div>
+        <div class="quick-stats">
+          <div class="stat-pill">
+            <span class="stat-number" id="stat-total">0</span>
+            <span class="stat-name">Total</span>
+          </div>
+          <div class="stat-pill stat-pending">
+            <span class="stat-number" id="stat-pending">0</span>
+            <span class="stat-name">Pending</span>
+          </div>
+          <div class="stat-pill stat-completed">
+            <span class="stat-number" id="stat-completed">0</span>
+            <span class="stat-name">Completed</span>
+          </div>
+          <div class="stat-pill stat-high">
+            <span class="stat-number" id="stat-high">0</span>
+            <span class="stat-name">High Priority</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Task Creator Card -->
+      <section class="card form-card">
+        <h2 class="card-title">Add New Task</h2>
+        <form id="add-task-form" class="task-form">
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label for="task-title">Task Title <span class="required">*</span></label>
+              <input type="text" id="task-title" placeholder="e.g., Prepare Software Testing Viva PPT..." required autocomplete="off">
+            </div>
+            <div class="form-group flex-1">
+              <label for="task-priority">Priority</label>
+              <select id="task-priority">
+                <option value="normal" selected>Normal</option>
+                <option value="high">High</option>
+                <option value="low">Low</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="task-desc">Description (Optional)</label>
+            <input type="text" id="task-desc" placeholder="Add extra context or notes..." autocomplete="off">
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="btn-submit-task">
+              <span>+ Add Task</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Task Controls & Filters -->
+      <section class="controls-bar">
+        <div class="filter-group">
+          <span class="filter-label">Status:</span>
+          <button class="filter-btn active" data-filter-status="all">All</button>
+          <button class="filter-btn" data-filter-status="active">Active</button>
+          <button class="filter-btn" data-filter-status="completed">Completed</button>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Priority:</span>
+          <select id="filter-priority-select" class="select-sm">
+            <option value="all">All Priorities</option>
+            <option value="high">High</option>
+            <option value="normal">Normal</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Tasks List Container -->
+      <section class="tasks-container">
+        <div id="tasks-list" class="tasks-list">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+        <div id="empty-state" class="empty-state" style="display: none;">
+          <div class="empty-icon">📝</div>
+          <h3>No tasks found</h3>
+          <p>Add a task using the form above or adjust your status/priority filters.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="alert"></div>
+
+  <footer class="app-footer">
+    <p>Software Engineering & Testing Project &bull; Built with Flask, PyTest, Coverage, Flake8, Bandit & Radon</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
